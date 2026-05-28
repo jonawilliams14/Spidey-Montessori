@@ -22,6 +22,13 @@ const milestones = [
 ];
 
 const statuses = ["not started", "practicing", "mostly knows", "mastered"];
+const clipArt = {
+  backpack: "assets/clip-art/backpack-spidey.jpg",
+  bam: "assets/clip-art/Bam.jpg",
+  ghost: "assets/clip-art/ghost_spider.jpg",
+  hanging: "assets/clip-art/hanging-spidey.jpg",
+  mask: "assets/clip-art/spideymask.jpg",
+};
 const activityFeedback = {
   letters: "Nice listening. That effort earns a star.",
   numbers: "Great counting. That effort earns a star.",
@@ -42,6 +49,9 @@ const starCount = document.querySelector("#starCount");
 const rewardList = document.querySelector("#rewardList");
 const milestoneList = document.querySelector("#milestoneList");
 const memoryGrid = document.querySelector("#memoryGrid");
+const countObjects = document.querySelector("#countObjects");
+const firstAddend = document.querySelector("#firstAddend");
+const secondAddend = document.querySelector("#secondAddend");
 
 function loadState() {
   const saved = localStorage.getItem(storageKey);
@@ -165,12 +175,37 @@ function resetActivityFeedback() {
   });
 }
 
+function createClipImage(src, alt) {
+  const image = document.createElement("img");
+  image.src = src;
+  image.alt = alt;
+  image.loading = "lazy";
+  return image;
+}
+
+function renderImageSet(container, count, src, alt) {
+  container.innerHTML = "";
+
+  for (let index = 0; index < count; index += 1) {
+    container.append(createClipImage(src, alt));
+  }
+}
+
+function renderCountingGame() {
+  renderImageSet(countObjects, 3, clipArt.mask, "Spidey mask");
+}
+
+function renderAdditionGame() {
+  renderImageSet(firstAddend, 1, clipArt.backpack, "Backpack Spidey");
+  renderImageSet(secondAddend, 2, clipArt.backpack, "Backpack Spidey");
+}
+
 function buildMemoryGame() {
   const cards = [
-    { id: "web-1", pair: "web", symbol: "*" },
-    { id: "web-2", pair: "web", symbol: "*" },
-    { id: "badge-1", pair: "badge", symbol: "#" },
-    { id: "badge-2", pair: "badge", symbol: "#" },
+    { id: "mask-1", pair: "mask", image: clipArt.mask, alt: "Spidey mask" },
+    { id: "mask-2", pair: "mask", image: clipArt.mask, alt: "Spidey mask" },
+    { id: "ghost-1", pair: "ghost", image: clipArt.ghost, alt: "Ghost spider" },
+    { id: "ghost-2", pair: "ghost", image: clipArt.ghost, alt: "Ghost spider" },
   ].sort(() => Math.random() - 0.5);
 
   flippedCards = [];
@@ -184,12 +219,24 @@ function buildMemoryGame() {
     button.type = "button";
     button.dataset.pair = card.pair;
     button.dataset.id = card.id;
-    button.dataset.symbol = card.symbol;
+    button.dataset.image = card.image;
+    button.dataset.alt = card.alt;
     button.setAttribute("aria-label", "Hidden memory card");
     button.textContent = "?";
     button.addEventListener("click", () => flipCard(button));
     memoryGrid.append(button);
   });
+}
+
+function revealMemoryCard(card) {
+  card.textContent = "";
+  card.append(createClipImage(card.dataset.image, card.dataset.alt));
+  card.setAttribute("aria-label", card.dataset.alt);
+}
+
+function hideMemoryCard(card) {
+  card.textContent = "?";
+  card.setAttribute("aria-label", "Hidden memory card");
 }
 
 function flipCard(card) {
@@ -198,7 +245,7 @@ function flipCard(card) {
   }
 
   card.classList.add("flipped");
-  card.textContent = card.dataset.symbol;
+  revealMemoryCard(card);
   flippedCards.push(card);
 
   if (flippedCards.length === 2) {
@@ -229,8 +276,8 @@ function checkMemoryMatch() {
   window.setTimeout(() => {
     first.classList.remove("flipped");
     second.classList.remove("flipped");
-    first.textContent = "?";
-    second.textContent = "?";
+    hideMemoryCard(first);
+    hideMemoryCard(second);
     flippedCards = [];
   }, 900);
 }
@@ -288,4 +335,6 @@ document.querySelector("#resetActivities").addEventListener("click", () => {
 });
 
 render();
+renderCountingGame();
+renderAdditionGame();
 buildMemoryGame();
