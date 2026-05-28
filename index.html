@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spidey Montessori</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero-panel">
+        <div>
+          <p class="eyebrow">Today&apos;s Web Hero Missions</p>
+          <h1>Spidey Montessori</h1>
+          <p class="intro">A calm 15-minute learning path for parent and child.</p>
+        </div>
+        <section class="star-bank" aria-label="Star rewards">
+          <span class="star-icon" aria-hidden="true">&starf;</span>
+          <div>
+            <p class="label">Stars</p>
+            <strong id="starCount">0</strong>
+          </div>
+          <button class="small-action" id="addEffortStar" type="button">Add effort star</button>
+        </section>
+      </header>
+
+      <nav class="mission-tabs" aria-label="Learning missions">
+        <button class="tab active" type="button" data-target="letters">Letters</button>
+        <button class="tab" type="button" data-target="numbers">Numbers</button>
+        <button class="tab" type="button" data-target="math">Math</button>
+        <button class="tab" type="button" data-target="memory">Memory</button>
+      </nav>
+
+      <section class="mission-card active" id="letters" aria-labelledby="lettersTitle">
+        <div class="mission-heading">
+          <div>
+            <p class="mission-time">3 minutes</p>
+            <h2 id="lettersTitle">Letter Sound Mission</h2>
+          </div>
+          <button class="audio-button" type="button" data-prompt="Find the letter that makes the mmm sound.">Hear Prompt</button>
+        </div>
+        <p class="parent-note">Ask: which letter says &quot;mmm&quot; like moon?</p>
+        <div class="choice-grid letter-grid" data-activity="letters">
+          <button class="choice" type="button" data-correct="false">S</button>
+          <button class="choice" type="button" data-correct="true">M</button>
+          <button class="choice" type="button" data-correct="false">T</button>
+        </div>
+        <p class="feedback" id="lettersFeedback" aria-live="polite"></p>
+      </section>
+
+      <section class="mission-card" id="numbers" aria-labelledby="numbersTitle">
+        <div class="mission-heading">
+          <div>
+            <p class="mission-time">3 minutes</p>
+            <h2 id="numbersTitle">Counting Mission</h2>
+          </div>
+          <button class="audio-button" type="button" data-prompt="Count the stars, then tap the number.">Hear Prompt</button>
+        </div>
+        <p class="parent-note">Count each star together, then pick the matching number.</p>
+        <div class="objects" aria-label="Three stars to count">
+          <span>&starf;</span><span>&starf;</span><span>&starf;</span>
+        </div>
+        <div class="choice-grid" data-activity="numbers">
+          <button class="choice" type="button" data-correct="false">2</button>
+          <button class="choice" type="button" data-correct="true">3</button>
+          <button class="choice" type="button" data-correct="false">4</button>
+        </div>
+        <p class="feedback" id="numbersFeedback" aria-live="polite"></p>
+      </section>
+
+      <section class="mission-card" id="math" aria-labelledby="mathTitle">
+        <div class="mission-heading">
+          <div>
+            <p class="mission-time">3 minutes</p>
+            <h2 id="mathTitle">Putting Together Mission</h2>
+          </div>
+          <button class="audio-button" type="button" data-prompt="One badge and two badges makes how many badges altogether?">Hear Prompt</button>
+        </div>
+        <p class="parent-note">Show that 1 badge joins 2 badges. No speed needed.</p>
+        <div class="addition-row" aria-label="One plus two badges">
+          <div class="objects"><span>&diams;</span></div>
+          <span class="math-symbol">+</span>
+          <div class="objects"><span>&diams;</span><span>&diams;</span></div>
+        </div>
+        <div class="choice-grid" data-activity="math">
+          <button class="choice" type="button" data-correct="false">2</button>
+          <button class="choice" type="button" data-correct="true">3</button>
+          <button class="choice" type="button" data-correct="false">5</button>
+        </div>
+        <p class="feedback" id="mathFeedback" aria-live="polite"></p>
+      </section>
+
+      <section class="mission-card" id="memory" aria-labelledby="memoryTitle">
+        <div class="mission-heading">
+          <div>
+            <p class="mission-time">3 minutes</p>
+            <h2 id="memoryTitle">Memory Match Mission</h2>
+          </div>
+          <button class="audio-button" type="button" data-prompt="Turn over two cards and find the matching shapes.">Hear Prompt</button>
+        </div>
+        <p class="parent-note">Find both matching pairs. Celebrate careful looking.</p>
+        <div class="memory-grid" id="memoryGrid" aria-label="Four card memory game"></div>
+        <p class="feedback" id="memoryFeedback" aria-live="polite"></p>
+      </section>
+
+      <section class="daily-actions" aria-label="Daily session controls">
+        <button class="primary-action" id="completeSession" type="button">Complete today&apos;s mission</button>
+        <button class="secondary-action" id="resetActivities" type="button">Repeat activities</button>
+      </section>
+
+      <section class="two-column">
+        <div class="panel">
+          <div class="section-heading">
+            <h2>Reward Store</h2>
+            <p>Parent chooses when to redeem.</p>
+          </div>
+          <div class="reward-list" id="rewardList"></div>
+        </div>
+
+        <div class="panel">
+          <div class="section-heading">
+            <h2>Milestones</h2>
+            <p>Tap a status to update progress.</p>
+          </div>
+          <div class="milestone-list" id="milestoneList"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
