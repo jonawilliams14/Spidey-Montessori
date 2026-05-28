@@ -24,25 +24,18 @@ const milestones = [
 const statuses = ["not started", "practicing", "mostly knows", "mastered"];
 const clipArt = [
   { id: "backpack", label: "Backpack Spidey", src: "assets/clip-art/backpack-spidey.jpg" },
-  { id: "bam", label: "Bam", src: "assets/clip-art/Bam.jpg" },
-  { id: "boom", label: "Boom", src: "assets/clip-art/Boom.jpg" },
   { id: "doc-oc", label: "Doc Oc", src: "assets/clip-art/Doc-Oc.jpg" },
   { id: "ghost-spider", label: "Ghost spider", src: "assets/clip-art/ghost_spider.jpg" },
   { id: "green-goblin", label: "Green goblin", src: "assets/clip-art/green-goblin.jpg" },
-  { id: "hanging-spidey", label: "Hanging Spidey", src: "assets/clip-art/hanging-spidey.jpg" },
   { id: "hanging-spin", label: "Hanging Spin", src: "assets/clip-art/Hanging-spin.jpg" },
   { id: "hulk", label: "Hulk", src: "assets/clip-art/Hulk.jpg" },
   { id: "iron-heart", label: "Ironheart", src: "assets/clip-art/Iron-heart.jpg" },
   { id: "iron-hulk", label: "Iron Hulk", src: "assets/clip-art/Iron-hulk.jpg" },
   { id: "ironman", label: "Iron Man", src: "assets/clip-art/Ironman.jpg" },
-  { id: "marvel-spiderman", label: "Spidey", src: "assets/clip-art/Marvel-Spiderman.jpg" },
-  { id: "pencil-spiderman", label: "Pencil Spidey", src: "assets/clip-art/pencil-spiderman.jpg" },
-  { id: "pink-spider", label: "Pink spider", src: "assets/clip-art/Pink-spider.jpg" },
   { id: "spider-bot", label: "Spider bot", src: "assets/clip-art/Spider-bot.jpg" },
   { id: "spidey-logo", label: "Spidey logo", src: "assets/clip-art/spidey-logo.jpg" },
   { id: "spidey-mask", label: "Spidey mask", src: "assets/clip-art/spideymask.jpg" },
   { id: "spin", label: "Spin", src: "assets/clip-art/Spin.jpg" },
-  { id: "web-slinger", label: "Web slinger", src: "assets/clip-art/Web-slinger-spidey.jpg" },
 ];
 const activityFeedback = {
   letters: "Nice listening. That effort earns a star.",
