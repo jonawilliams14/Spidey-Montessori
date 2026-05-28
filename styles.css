@@ -270,10 +270,44 @@ h2 {
   font-weight: 800;
 }
 
+.memory-controls {
+  display: grid;
+  grid-template-columns: auto repeat(4, minmax(44px, 1fr));
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.memory-controls span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.tile-option {
+  min-height: 44px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.tile-option.active {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: white;
+}
+
 .memory-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.memory-grid[data-tiles="6"],
+.memory-grid[data-tiles="8"],
+.memory-grid[data-tiles="10"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .memory-card {
@@ -389,6 +423,15 @@ h2 {
   .daily-actions,
   .two-column {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .memory-grid[data-tiles="6"],
+  .memory-grid[data-tiles="8"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .memory-grid[data-tiles="10"] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .reward-item {
