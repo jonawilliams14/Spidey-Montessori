@@ -44,11 +44,13 @@ const defaultState = {
 let state = loadState();
 let flippedCards = [];
 let matchedCards = 0;
+let memoryTileCount = 4;
 
 const starCount = document.querySelector("#starCount");
 const rewardList = document.querySelector("#rewardList");
 const milestoneList = document.querySelector("#milestoneList");
 const memoryGrid = document.querySelector("#memoryGrid");
+const memoryTileOptions = document.querySelectorAll(".tile-option");
 const countObjects = document.querySelector("#countObjects");
 const firstAddend = document.querySelector("#firstAddend");
 const secondAddend = document.querySelector("#secondAddend");
@@ -207,7 +209,8 @@ function renderAdditionGame() {
 }
 
 function buildMemoryGame() {
-  const pairs = pickRandomItems(clipArt, 2);
+  const pairCount = memoryTileCount / 2;
+  const pairs = pickRandomItems(clipArt, pairCount);
   const cards = pairs.flatMap((item) => [
     { id: `${item.id}-1`, pair: item.id, image: item.src, alt: item.label },
     { id: `${item.id}-2`, pair: item.id, image: item.src, alt: item.label },
@@ -216,6 +219,8 @@ function buildMemoryGame() {
   flippedCards = [];
   matchedCards = 0;
   memoryGrid.innerHTML = "";
+  memoryGrid.dataset.tiles = memoryTileCount;
+  memoryGrid.setAttribute("aria-label", `${memoryTileCount} card memory game`);
   document.querySelector("#memoryFeedback").textContent = "";
 
   cards.forEach((card) => {
@@ -269,7 +274,7 @@ function checkMemoryMatch() {
     matchedCards += 2;
     feedback.textContent = "Match found. Careful looking!";
 
-    if (matchedCards === 4) {
+    if (matchedCards === memoryTileCount) {
       feedback.textContent = "All matched. Memory mission complete.";
       completeActivity("memory");
       speak("All matched. Memory mission complete.");
@@ -298,6 +303,15 @@ document.querySelectorAll(".tab").forEach((tab) => {
 
 document.querySelectorAll(".audio-button").forEach((button) => {
   button.addEventListener("click", () => speak(button.dataset.prompt));
+});
+
+memoryTileOptions.forEach((button) => {
+  button.addEventListener("click", () => {
+    memoryTileOptions.forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    memoryTileCount = Number(button.dataset.tiles);
+    buildMemoryGame();
+  });
 });
 
 document.querySelectorAll("[data-activity] .choice").forEach((choice) => {
