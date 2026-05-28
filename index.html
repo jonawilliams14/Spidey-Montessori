@@ -57,9 +57,7 @@
           <button class="audio-button" type="button" data-prompt="Count the stars, then tap the number.">Hear Prompt</button>
         </div>
         <p class="parent-note">Count each star together, then pick the matching number.</p>
-        <div class="objects" aria-label="Three stars to count">
-          <span>&starf;</span><span>&starf;</span><span>&starf;</span>
-        </div>
+        <div class="objects image-objects" id="countObjects" aria-label="Three pictures to count"></div>
         <div class="choice-grid" data-activity="numbers">
           <button class="choice" type="button" data-correct="false">2</button>
           <button class="choice" type="button" data-correct="true">3</button>
@@ -78,9 +76,9 @@
         </div>
         <p class="parent-note">Show that 1 badge joins 2 badges. No speed needed.</p>
         <div class="addition-row" aria-label="One plus two badges">
-          <div class="objects"><span>&diams;</span></div>
+          <div class="objects image-objects" id="firstAddend"></div>
           <span class="math-symbol">+</span>
-          <div class="objects"><span>&diams;</span><span>&diams;</span></div>
+          <div class="objects image-objects" id="secondAddend"></div>
         </div>
         <div class="choice-grid" data-activity="math">
           <button class="choice" type="button" data-correct="false">2</button>
