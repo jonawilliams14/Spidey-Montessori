@@ -45,6 +45,8 @@ let state = loadState();
 let flippedCards = [];
 let matchedCards = 0;
 let memoryTileCount = 4;
+let currentAdditionAnswer = 3;
+let lastAdditionKey = "";
 
 const starCount = document.querySelector("#starCount");
 const rewardList = document.querySelector("#rewardList");
@@ -54,6 +56,9 @@ const memoryTileOptions = document.querySelectorAll(".tile-option");
 const countObjects = document.querySelector("#countObjects");
 const firstAddend = document.querySelector("#firstAddend");
 const secondAddend = document.querySelector("#secondAddend");
+const mathChoices = document.querySelectorAll('[data-activity="math"] .choice');
+const mathAudioButton = document.querySelector("#math .audio-button");
+const mathParentNote = document.querySelector("#math .parent-note");
 
 function loadState() {
   const saved = localStorage.getItem(storageKey);
@@ -204,8 +209,34 @@ function renderCountingGame() {
 
 function renderAdditionGame() {
   const [item] = pickRandomItems(clipArt, 1);
-  renderImageSet(firstAddend, 1, item.src, item.label);
-  renderImageSet(secondAddend, 2, item.src, item.label);
+  const problems = [
+    [1, 1],
+    [1, 2],
+    [2, 1],
+    [1, 3],
+    [2, 2],
+    [3, 1],
+    [1, 4],
+    [2, 3],
+    [3, 2],
+    [4, 1],
+  ].filter(([first, second]) => `${first}-${second}` !== lastAdditionKey);
+  const [firstCount, secondCount] = pickRandomItems(problems, 1)[0];
+  const total = firstCount + secondCount;
+  const choices = pickRandomItems([1, 2, 3, 4, 5].filter((number) => number !== total), 2);
+
+  currentAdditionAnswer = total;
+  lastAdditionKey = `${firstCount}-${secondCount}`;
+  renderImageSet(firstAddend, firstCount, item.src, item.label);
+  renderImageSet(secondAddend, secondCount, item.src, item.label);
+  document.querySelector(".addition-row").setAttribute("aria-label", `${firstCount} plus ${secondCount} pictures`);
+  mathParentNote.textContent = `Show that ${firstCount} picture${firstCount === 1 ? "" : "s"} joins ${secondCount} picture${secondCount === 1 ? "" : "s"}. No speed needed.`;
+  mathAudioButton.dataset.prompt = `${firstCount} picture${firstCount === 1 ? "" : "s"} and ${secondCount} picture${secondCount === 1 ? "" : "s"} makes how many pictures altogether?`;
+
+  pickRandomItems([total, ...choices], 3).forEach((number, index) => {
+    mathChoices[index].textContent = number;
+    mathChoices[index].dataset.correct = String(number === total);
+  });
 }
 
 function buildMemoryGame() {
@@ -320,6 +351,10 @@ document.querySelectorAll("[data-activity] .choice").forEach((choice) => {
     const feedback = document.querySelector(`#${activity}Feedback`);
 
     choice.classList.remove("try-again");
+
+    if (activity === "math" && Number(choice.textContent) !== currentAdditionAnswer) {
+      choice.dataset.correct = "false";
+    }
 
     if (choice.dataset.correct === "true") {
       choice.classList.add("correct");
