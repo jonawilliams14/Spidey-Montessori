@@ -338,7 +338,7 @@ document.querySelector("#resetActivities").addEventListener("click", () => {
   renderCountingGame();
   renderAdditionGame();
   buildMemoryGame();
-  speak("Activities are ready to repeat.";
+  speak("Activities are ready to repeat.");
 });
 
 render();
