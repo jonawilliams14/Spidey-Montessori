@@ -22,13 +22,28 @@ const milestones = [
 ];
 
 const statuses = ["not started", "practicing", "mostly knows", "mastered"];
-const clipArt = {
-  backpack: "assets/clip-art/backpack-spidey.jpg",
-  bam: "assets/clip-art/Bam.jpg",
-  ghost: "assets/clip-art/ghost_spider.jpg",
-  hanging: "assets/clip-art/hanging-spidey.jpg",
-  mask: "assets/clip-art/spideymask.jpg",
-};
+const clipArt = [
+  { id: "backpack", label: "Backpack Spidey", src: "assets/clip-art/backpack-spidey.jpg" },
+  { id: "bam", label: "Bam", src: "assets/clip-art/Bam.jpg" },
+  { id: "boom", label: "Boom", src: "assets/clip-art/Boom.jpg" },
+  { id: "doc-oc", label: "Doc Oc", src: "assets/clip-art/Doc-Oc.jpg" },
+  { id: "ghost-spider", label: "Ghost spider", src: "assets/clip-art/ghost_spider.jpg" },
+  { id: "green-goblin", label: "Green goblin", src: "assets/clip-art/green-goblin.jpg" },
+  { id: "hanging-spidey", label: "Hanging Spidey", src: "assets/clip-art/hanging-spidey.jpg" },
+  { id: "hanging-spin", label: "Hanging Spin", src: "assets/clip-art/Hanging-spin.jpg" },
+  { id: "hulk", label: "Hulk", src: "assets/clip-art/Hulk.jpg" },
+  { id: "iron-heart", label: "Ironheart", src: "assets/clip-art/Iron-heart.jpg" },
+  { id: "iron-hulk", label: "Iron Hulk", src: "assets/clip-art/Iron-hulk.jpg" },
+  { id: "ironman", label: "Iron Man", src: "assets/clip-art/Ironman.jpg" },
+  { id: "marvel-spiderman", label: "Spidey", src: "assets/clip-art/Marvel-Spiderman.jpg" },
+  { id: "pencil-spiderman", label: "Pencil Spidey", src: "assets/clip-art/pencil-spiderman.jpg" },
+  { id: "pink-spider", label: "Pink spider", src: "assets/clip-art/Pink-spider.jpg" },
+  { id: "spider-bot", label: "Spider bot", src: "assets/clip-art/Spider-bot.jpg" },
+  { id: "spidey-logo", label: "Spidey logo", src: "assets/clip-art/spidey-logo.jpg" },
+  { id: "spidey-mask", label: "Spidey mask", src: "assets/clip-art/spideymask.jpg" },
+  { id: "spin", label: "Spin", src: "assets/clip-art/Spin.jpg" },
+  { id: "web-slinger", label: "Web slinger", src: "assets/clip-art/Web-slinger-spidey.jpg" },
+];
 const activityFeedback = {
   letters: "Nice listening. That effort earns a star.",
   numbers: "Great counting. That effort earns a star.",
@@ -191,22 +206,27 @@ function renderImageSet(container, count, src, alt) {
   }
 }
 
+function pickRandomItems(items, count) {
+  return [...items].sort(() => Math.random() - 0.5).slice(0, count);
+}
+
 function renderCountingGame() {
-  renderImageSet(countObjects, 3, clipArt.mask, "Spidey mask");
+  const [item] = pickRandomItems(clipArt, 1);
+  renderImageSet(countObjects, 3, item.src, item.label);
 }
 
 function renderAdditionGame() {
-  renderImageSet(firstAddend, 1, clipArt.backpack, "Backpack Spidey");
-  renderImageSet(secondAddend, 2, clipArt.backpack, "Backpack Spidey");
+  const [item] = pickRandomItems(clipArt, 1);
+  renderImageSet(firstAddend, 1, item.src, item.label);
+  renderImageSet(secondAddend, 2, item.src, item.label);
 }
 
 function buildMemoryGame() {
-  const cards = [
-    { id: "mask-1", pair: "mask", image: clipArt.mask, alt: "Spidey mask" },
-    { id: "mask-2", pair: "mask", image: clipArt.mask, alt: "Spidey mask" },
-    { id: "ghost-1", pair: "ghost", image: clipArt.ghost, alt: "Ghost spider" },
-    { id: "ghost-2", pair: "ghost", image: clipArt.ghost, alt: "Ghost spider" },
-  ].sort(() => Math.random() - 0.5);
+  const pairs = pickRandomItems(clipArt, 2);
+  const cards = pairs.flatMap((item) => [
+    { id: `${item.id}-1`, pair: item.id, image: item.src, alt: item.label },
+    { id: `${item.id}-2`, pair: item.id, image: item.src, alt: item.label },
+  ]).sort(() => Math.random() - 0.5);
 
   flippedCards = [];
   matchedCards = 0;
@@ -330,6 +350,8 @@ document.querySelector("#resetActivities").addEventListener("click", () => {
   state.completedActivities = {};
   saveState();
   resetActivityFeedback();
+  renderCountingGame();
+  renderAdditionGame();
   buildMemoryGame();
   speak("Activities are ready to repeat.");
 });
