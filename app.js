@@ -22,6 +22,34 @@ const milestones = [
 ];
 
 const statuses = ["not started", "practicing", "mostly knows", "mastered"];
+const alphabetSounds = [
+  { letter: "A", sound: "short a", example: "apple" },
+  { letter: "B", sound: "buh", example: "ball" },
+  { letter: "C", sound: "kuh", example: "cat" },
+  { letter: "D", sound: "duh", example: "dog" },
+  { letter: "E", sound: "short e", example: "egg" },
+  { letter: "F", sound: "fff", example: "fish" },
+  { letter: "G", sound: "guh", example: "go" },
+  { letter: "H", sound: "huh", example: "hat" },
+  { letter: "I", sound: "short i", example: "igloo" },
+  { letter: "J", sound: "juh", example: "jump" },
+  { letter: "K", sound: "kuh", example: "kite" },
+  { letter: "L", sound: "lll", example: "lion" },
+  { letter: "M", sound: "mmm", example: "moon" },
+  { letter: "N", sound: "nnn", example: "nest" },
+  { letter: "O", sound: "short o", example: "octopus" },
+  { letter: "P", sound: "puh", example: "pig" },
+  { letter: "Q", sound: "kwuh", example: "queen" },
+  { letter: "R", sound: "rrr", example: "rain" },
+  { letter: "S", sound: "sss", example: "sun" },
+  { letter: "T", sound: "tuh", example: "top" },
+  { letter: "U", sound: "short u", example: "up" },
+  { letter: "V", sound: "vvv", example: "van" },
+  { letter: "W", sound: "wuh", example: "web" },
+  { letter: "X", sound: "ks", example: "box" },
+  { letter: "Y", sound: "yuh", example: "yes" },
+  { letter: "Z", sound: "zzz", example: "zip" },
+];
 const clipArt = [
   { id: "backpack", label: "Backpack Spidey", src: "assets/clip-art/backpack-spidey.jpg" },
   { id: "doc-oc", label: "Doc Oc", src: "assets/clip-art/Doc-Oc.jpg" },
@@ -47,6 +75,7 @@ let matchedCards = 0;
 let memoryTileCount = 4;
 let currentAdditionAnswer = 3;
 let lastAdditionKey = "";
+let lastLetter = "";
 
 const starCount = document.querySelector("#starCount");
 const rewardList = document.querySelector("#rewardList");
@@ -56,6 +85,9 @@ const memoryTileOptions = document.querySelectorAll(".tile-option");
 const countObjects = document.querySelector("#countObjects");
 const firstAddend = document.querySelector("#firstAddend");
 const secondAddend = document.querySelector("#secondAddend");
+const letterChoices = document.querySelectorAll('[data-activity="letters"] .choice');
+const letterAudioButton = document.querySelector("#letters .audio-button");
+const letterParentNote = document.querySelector("#letters .parent-note");
 const mathChoices = document.querySelectorAll('[data-activity="math"] .choice');
 const mathAudioButton = document.querySelector("#math .audio-button");
 const mathParentNote = document.querySelector("#math .parent-note");
@@ -200,6 +232,24 @@ function renderImageSet(container, count, src, alt) {
 
 function pickRandomItems(items, count) {
   return [...items].sort(() => Math.random() - 0.5).slice(0, count);
+}
+
+function renderLetterGame() {
+  const availableLetters = alphabetSounds.filter((item) => item.letter !== lastLetter);
+  const [target] = pickRandomItems(availableLetters, 1);
+  const distractors = pickRandomItems(
+    alphabetSounds.filter((item) => item.letter !== target.letter),
+    2,
+  );
+
+  lastLetter = target.letter;
+  letterParentNote.textContent = `Ask: which letter says "${target.sound}" like ${target.example}?`;
+  letterAudioButton.dataset.prompt = `Find the letter that makes the ${target.sound} sound, like ${target.example}.`;
+
+  pickRandomItems([target, ...distractors], 3).forEach((item, index) => {
+    letterChoices[index].textContent = item.letter;
+    letterChoices[index].dataset.correct = String(item.letter === target.letter);
+  });
 }
 
 function renderCountingGame() {
@@ -384,6 +434,7 @@ document.querySelector("#resetActivities").addEventListener("click", () => {
   state.completedActivities = {};
   saveState();
   resetActivityFeedback();
+  renderLetterGame();
   renderCountingGame();
   renderAdditionGame();
   buildMemoryGame();
@@ -391,6 +442,7 @@ document.querySelector("#resetActivities").addEventListener("click", () => {
 });
 
 render();
+renderLetterGame();
 renderCountingGame();
 renderAdditionGame();
 buildMemoryGame();
